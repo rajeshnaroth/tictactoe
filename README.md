@@ -25,6 +25,7 @@ Once brew is installed, run:
     brew install git
 
 cd to your project root folder:
+
     git clone https://github.com/rajeshnaroth/tictactoe.git
     cd tictactoe
     npm install
