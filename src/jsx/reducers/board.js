@@ -21,7 +21,7 @@ const matrix = (state = {}, action) => {
 	switch (action.type) {
 		case PLAYER_CLICK: {
 			// let returnState =  {gameOver:state.gameOver, player:state.player, winner:0, matrix:state.matrix.map((r) => r)};
-			let returnState =  Object.assign({}, state,{winner:0})
+			let returnState =  Object.assign({}, state)
 			let cellData = Object.assign({}, action.cellData);
 
 			// Activity only happens in unplayed square and not an inactive square

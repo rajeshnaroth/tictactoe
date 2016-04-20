@@ -56,7 +56,10 @@ h1 { color:#99aabb; text-align: center;}
 			background-color:#FFE270;
 			margin:0 2px;
 			border:1px solid #E2BD2C;
-			&:hover { border:2px solid #333333;}
+			&:hover { 
+				border:2px solid #333333;
+				&.inactive{ border:inherit;}
+			}
 			display:flex;
 			align-items:center;
 			justify-content:center;
