@@ -1,5 +1,5 @@
 # tictactoe
-A simple tic tac toe game using react/redux and bootstrap
+A simple, responsive tic tac toe game using react/redux and bootstrap
 
 ##Step 1: First, you will need to install node, npm and webpack
 Install node from https://nodejs.org This will also install npm
