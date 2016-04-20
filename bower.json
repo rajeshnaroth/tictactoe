@@ -1,0 +1,22 @@
+{
+  "name": "bootcamp",
+  "description": "tictactoe with bootstrap, es6, redux and react",
+  "main": "app.js",
+  "authors": [
+    "Rajesh Naroth"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}
