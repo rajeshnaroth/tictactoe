@@ -8,7 +8,7 @@ var app = express();
 var routes = require('./routes/index');
 
 // app.use(express.static(__dirname + 'dist'));
-app.use('/dist', express.static(__dirname + '/dist'));
+app.use('/dist', express.static('node_modules'));
 app.use('/bower_components', express.static('bower_components'));
 
 //app.use('/css', express.static(__dirname + '/src/css'));
