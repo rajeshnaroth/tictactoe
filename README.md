@@ -2,7 +2,7 @@
 A simple tic tac toe game using react/redux and bootstrap
 
 ##Step 1: First, you will need to install node, npm and webpack
-    node (which will also install npm)
+Install node from https://nodejs.org This will also install npm
     npm install webpack -g
     npm install webpack-dev-server -g
 
@@ -11,4 +11,5 @@ A simple tic tac toe game using react/redux and bootstrap
 
 Now run 
     webpack-dev-server --progress --colors
+    
 and open http://localhost:8080/
