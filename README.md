@@ -9,7 +9,11 @@ Install node from https://nodejs.org This will also install npm
 ##Step 2: Install all the required node modules
     npm install
 
-Now run 
-    webpack-dev-server --progress --colors
-    
-and open http://localhost:8080/
+##Step 3. Package application 
+	webpack
+
+##Step 4. Run the express server
+    npm start
+
+###The application is ready at  http://localhost:9000/
+

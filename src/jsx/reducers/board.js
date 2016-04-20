@@ -1,5 +1,5 @@
 import { INIT_GAME, PLAYER_CLICK } from '../actions'
-import { seeIfCompleted } from '../utils'
+import { seeIfCompleted, isADraw } from '../utils'
 
 function createArray(arraySize) {
 	return function(initValue) {
@@ -20,13 +20,16 @@ const matrix = (state = {}, action) => {
 	
 	switch (action.type) {
 		case PLAYER_CLICK: {
-			let returnState =  {gameOver:state.gameOver, player:state.player, winner:0, matrix:state.matrix.map((r) => r)};
+			// let returnState =  {gameOver:state.gameOver, player:state.player, winner:0, matrix:state.matrix.map((r) => r)};
+			let returnState =  Object.assign({}, state,{winner:0})
 			let cellData = Object.assign({}, action.cellData);
-			// unplayed square and an inactive square
+
+			// Activity only happens in unplayed square and not an inactive square
 			if (cellData.player === 0 && !cellData.inactive) {
 				cellData.player = returnState.player;
 				returnState.matrix[cellData.rowIndex][cellData.columnIndex] = cellData;
 
+				// Condition 1 - some one won
 				let completed = seeIfCompleted(returnState.matrix);
 				if (completed) {
 					let {row, column, rowInc, colInc} = completed
@@ -43,9 +46,17 @@ const matrix = (state = {}, action) => {
 					returnState.gameOver = true
 					returnState.winner = returnState.player
 					returnState.player = 0
-				} else {
-					returnState.player = switchPlayer(returnState.player );
+					return returnState
+				} 
+				// Condition 2 - all cells filled. Its a draw
+				if (isADraw(returnState.matrix)) {
+					returnState.gameOver = true
+					returnState.winner = -1 //signal no winner
+					returnState.player = 0
+					return returnState
 				}
+				// Condition 3 - Game is still on
+				returnState.player = switchPlayer(returnState.player );
 			}
 			return returnState;
 		}

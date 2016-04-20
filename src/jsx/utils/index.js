@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export function seeIfCompleted(matrix) {
 
 	let solvedLine = function(matrix, params) {
@@ -28,4 +30,9 @@ export function seeIfCompleted(matrix) {
 		solvedLine(matrix, {row :0, column: 1, rowInc: 1, colInc: 0}) ||  //middle column down
 		solvedLine(matrix, {row :1, column: 0, rowInc: 0, colInc: 1})	  // middle row down
 	)
+}
+
+export function isADraw(matrix) {
+	console.log()
+	return (_.flatten(matrix.map(row => row.filter(col => col.player === 0))).length === 0)
 }
