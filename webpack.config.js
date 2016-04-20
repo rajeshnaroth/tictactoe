@@ -24,7 +24,9 @@ module.exports = {
 				exclude:/(node_modules|bower_components)/
 			},
 			{
-				test: /\.png$/, loader: "url-loader?mimetype=image/png"
+				//.url loader will bundle up the image..
+				//test: /\.png$/, loader: "url-loader?mimetype=image/png"
+				test: /\.png$/, loader: "file?name=images/[hash].[ext]?"
 			}
 		]
 	},

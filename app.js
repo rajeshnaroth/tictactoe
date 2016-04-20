@@ -11,6 +11,7 @@ var routes = require('./routes/index');
 app.use('/dist', express.static('dist'));
 app.use('/vendor', express.static('node_modules'));
 app.use('/bower_components', express.static('bower_components'));
+app.use('/images', express.static('images'));
 
 //app.use('/css', express.static(__dirname + '/src/css'));
 app.use('/', routes);
