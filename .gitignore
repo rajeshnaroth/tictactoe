@@ -3,5 +3,7 @@ bower_components
 dist
 build
 .DS_Store
+.idea
 *.swp
 *.log
+images

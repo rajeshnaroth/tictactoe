@@ -69,12 +69,12 @@ h1 { color:#99aabb; text-align: center;}
 			&.played {background-color:#96DCFF; cursor:auto;}
 			@keyframes glow {
 				0% {background-color:white;}
-				20% {background-color:#888888;}	
-				30% {background-color:white;}
-				40% {background-color:#888888;}
+				4% {background-color:#555555;}
+				8% {background-color:white;}
+				12% {background-color:#888888;}
 				100% {background-color:#E2FF70;}
 			}
-			&.solved {animation-name:glow; animation-duration: 1s; background-color:#E2FF70;}
+			&.solved {animation-name:glow; animation-duration: 1.5s; background-color:#E2FF70;}
 			&.p1, &.p2 {background-repeat:no-repeat; background-position: center;}
 			&.p1 { background-image:url(../images/x.png); }
 			&.p2 { background-image:url(../images/o.png); }

@@ -16,7 +16,7 @@ const BOARD_SIZE = 3
 const boardArray = createArray(BOARD_SIZE)
 const initValue = 0
 
-const matrix = (state = {}, action={}) => {
+const game = (state = {}, action={}) => {
 	
 	switch (action.type) {
 		case PLAYER_CLICK: {
@@ -77,4 +77,4 @@ const matrix = (state = {}, action={}) => {
 	}
 }
 
-export default matrix
+export default game
