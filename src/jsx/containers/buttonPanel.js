@@ -1,17 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { initGame } from '../actions'
+import { initGame, switchToComputerPlay } from '../actions'
 import BoardButtons from '../components/BoardButtons'
 
 const mapStateToProps = function(state, ownProps) {
-	return {gameOver: state.board.gameOver}
+	return {gameOver: state.board.gameOver, playWithComputer:state.board.playWithComputer}
 }
 
 const mapDispatchToProps = function(dispatch, ownProps) {
 	return {
 		buttonClick: function(e) {
 			dispatch(initGame())
+		},
+		checkBoxClick: function(e, status) {
+			dispatch(switchToComputerPlay(status))
 		}
 	}
 }
