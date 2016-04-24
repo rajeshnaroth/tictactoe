@@ -17,7 +17,9 @@ module.exports = function (config) {
             devtool: 'inline-source-map', //just do inline source maps instead of the default
             module: {
                 loaders: [
-                    { test: /\.js$/, loader: 'babel-loader' }
+                    { test: /\.js$/, loader: 'babel-loader' },
+                    { test: /\.scss$/, loaders: ['style', 'css', 'sass'] },
+                    { test: /\.png$/, loader: "file?name=images/[hash].[ext]?"}
                 ]
             }
         },

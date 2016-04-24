@@ -53,7 +53,7 @@ var ReferenceComponent = React.createClass({
 	},
 
 	render: function() {
-   		return <ul>{ this.state.items.map(item => <li>{item.name}</li>) }</ul>;
+   		return <ul>{ this.state.items.map(item => <li key={item.name} >{item.name}</li>) }</ul>;
     }
 })
 

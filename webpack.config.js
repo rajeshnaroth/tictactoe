@@ -4,12 +4,12 @@ var path = require('path');
 var APP_DIR = path.resolve(__dirname, 'src');
 var DIST_DIR = path.resolve(__dirname, 'dist');
 module.exports = {
-	entry:APP_DIR + '/jsx/main.jsx',
+	entry:APP_DIR + '/jsx/main.js',
 	output:{filename:DIST_DIR + '/js/bundle.js'},
 	module:{
 		loaders:[
 			{
-				test : /\.jsx?/,
+				test : /\.js$/,
         		loader : 'babel',
         		query:{
 					presets:['react']

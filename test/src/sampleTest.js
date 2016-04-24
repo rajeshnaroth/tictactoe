@@ -1,7 +1,8 @@
-var React = require('react');
+import React from 'react'
 var expect = require('expect');
-var testUtils = require('react/lib/ReactTestUtils')
-var App = require('../../src/jsx/components/app');
+import testUtils from 'react/lib/ReactTestUtils'
+import Status from '../../src/jsx/components/status'
+import ReferenceComponent from '../../src/jsx/components/referenceComponent'
 
 describe('root', function () {
     it('testing 1', function () {
@@ -14,7 +15,16 @@ describe('root', function () {
     });
 
     it('testing 3 ', function () {
-        var app = testUtils.renderIntoDocument(<App />);
-        expect(app).toExist();
+        var testComp = testUtils.renderIntoDocument(<ReferenceComponent />);
+        //console.log(testComp);
+        expect(testComp).toExist();
+    });
+
+    it('testing 4 ', function () {
+        var board = {player:1, gameOver:false, winner:0}
+        console.log('#########');
+        var status = testUtils.renderIntoDocument(<Status board={board} />);
+        console.log(status);
+        expect(status).toExist();
     });
 });
