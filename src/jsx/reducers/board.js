@@ -1,5 +1,5 @@
 import { INIT_GAME, PLAYER_CLICK, PLAY_WITH_COMPUTER } from '../actions'
-import { seeIfCompleted, isADraw } from '../utils'
+import { isSolved, randomPlay, isADraw } from '../utils'
 
 function createArray(arraySize) {
 	return function(initValue) {
@@ -10,19 +10,6 @@ function createArray(arraySize) {
 	}
 }
 
-// Math.random calls
-function randomPlay(matrix) {
-	// Apply a common strategy to increase the odds..
-
-	if (matrix[1][1].player < 1) return {row:1, col:1}
-	if (!seeIfCompleted(matrix)) {
-		do {
-			var row = Math.floor(Math.random() * 3); // row and col are hoisted
-			var col = Math.floor(Math.random() * 3);
-		} while(matrix[row][col].player > 0)
-		return {row, col}
-	}
-}
 
 function windupGame(returnState) {
 	let {row, column, rowInc, colInc} = completed
@@ -50,7 +37,7 @@ const initValue = 0
 const game = (state = {board:{playWithComputer:false}}, action={}) => {
 
 	function tryAndWindupGame(returnState) {
-		let completed = seeIfCompleted(returnState.matrix);
+		let completed = isSolved(returnState.matrix);
 		if (completed) {
 			let {row, column, rowInc, colInc} = completed
 			// NO more actions. set it all inactive
@@ -97,7 +84,7 @@ const game = (state = {board:{playWithComputer:false}}, action={}) => {
 				// Condition 2 - Game is still on
 				if (returnState.playWithComputer) {
 					returnState.player = switchPlayer(returnState.player)
-					let {row, col} = randomPlay(returnState.matrix)
+					let {row, col} = randomPlay(returnState.matrix, returnState.player, switchPlayer(returnState.player))
 					returnState.matrix[row][col].player = returnState.player
 
 					newStatus = tryAndWindupGame(returnState)
@@ -125,7 +112,7 @@ const game = (state = {board:{playWithComputer:false}}, action={}) => {
 				})
 			}
 			if (initData.playWithComputer && initData.player === 2) {
-				let {row, col} = randomPlay(initData.matrix)
+				let {row, col} = randomPlay(initData.matrix, 2, 1)
 				initData.matrix[row][col].player = 2
 				initData.player = 1
 			}
