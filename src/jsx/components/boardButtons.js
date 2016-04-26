@@ -12,7 +12,7 @@ const BoardButtons = React.createClass({
 						   checked={this.props.playWithComputer}
 						   onClick={(e) => {this.props.checkBoxClick(e, e.target.checked)}}
 						   value="yes"/>
-					Play with dumb computer</label>
+					Play with computer. It won't let you win.</label>
 			</span>
 		</p>
 	}

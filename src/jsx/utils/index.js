@@ -42,11 +42,10 @@ function playingInThisCellSolves(cell, matrix, player) {
 	}
 }
 
-function canPlayerSolve(matrix, player) {
+function canPlayerSolveInNextMove(matrix, player) {
 	var completedMoves = _.flatten(matrix.map(row => {
 		return row.filter(cell => !!playingInThisCellSolves(cell, matrix, player))
 	}));
-	if (completedMoves.length > 0) console.log(player, {row:completedMoves[0].rowIndex, col:completedMoves[0].columnIndex})
 	return (completedMoves.length > 0) ? {row:completedMoves[0].rowIndex, col:completedMoves[0].columnIndex} : false;
 }
 
@@ -54,7 +53,7 @@ function canPlayerSolve(matrix, player) {
 export function randomPlay(matrix, player, opponent) {
 	// Apply a common strategy to increase the odds..
 
-	var nextMove = canPlayerSolve(matrix, player) || canPlayerSolve(matrix, opponent);
+	var nextMove = canPlayerSolveInNextMove(matrix, player) || canPlayerSolveInNextMove(matrix, opponent);
 	if (nextMove) return nextMove;
 	// Some dumb moves.
 	if (matrix[1][1].player < 1) return {row:1, col:1} // first preference, the center block
@@ -76,6 +75,5 @@ export function randomPlay(matrix, player, opponent) {
 
 
 export function isADraw(matrix) {
-	console.log()
 	return (_.flatten(matrix.map(row => row.filter(col => col.player === 0))).length === 0)
 }
