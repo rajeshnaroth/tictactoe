@@ -1,4 +1,4 @@
-import { INIT_GAME, TRY_AND_WINDUP, USER_PLAY, PLAY_WITH_COMPUTER, COMPUTER_PLAY, SWITCH_PLAYER } from '../actions'
+import { INIT_GAME, TRY_AND_WINDUP, USER_PLAY, TURN_ON_COMPUTER_PLAY, COMPUTER_PLAY, SWITCH_PLAYER } from '../actions'
 import { isSolved, computerPlay, isADraw } from '../utils'
 
 function createArray(arraySize) {
@@ -20,7 +20,7 @@ const game = (state = {board:{playWithComputer:false}}, action={}) => {
 
 	switch (action.type) {
 
-		case PLAY_WITH_COMPUTER: {
+		case TURN_ON_COMPUTER_PLAY: {
 			return  Object.assign({}, state, { playWithComputer: action.status})
 		}
 

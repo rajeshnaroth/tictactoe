@@ -6,7 +6,7 @@ export const USER_PLAY = 'USER_PLAY'
 export const COMPUTER_PLAY = 'COMPUTER_PLAY'
 export const SWITCH_PLAYER = 'SWITCH PLAYER'
 export const TRY_AND_WINDUP = 'SWITCH TRY_AND_WINDUP'
-export const PLAY_WITH_COMPUTER = 'PLAY_WITH_COMPUTER'
+export const TURN_ON_COMPUTER_PLAY = 'TURN_ON_COMPUTER_PLAY'
 
 export function initGame() {
 	return {
@@ -39,9 +39,9 @@ export function switchPlayer() {
 	}
 }
 
-export function switchToComputerPlay(status) {
+export function turnOnComputerPlay(status) {
 	return {
-		type: PLAY_WITH_COMPUTER,
+		type: TURN_ON_COMPUTER_PLAY,
 		status: status
 	}
 }
@@ -51,6 +51,7 @@ export function startGame() {
 		Promise.all([
 			dispatch(initGame())
 		]).then(() => {
+			// Is it the computer's turn to play?
 			if (getState().board.playWithComputer && getState().board.player === 2) {
 				Promise.all([
 					dispatch(computerPlay()),
