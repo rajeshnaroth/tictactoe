@@ -2,18 +2,13 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import { thunk } from './utils'
+import {Router, Route, browserHistory} from 'react-router'
+import App from './components/app'
 
-import GamePanel from './containers/gamePanel'
-import reducer from './reducers'
-
-var store = createStore(reducer, applyMiddleware(thunk));
-
+// No need for routes but this will serve well as a reference
 ReactDOM.render(
-	<Provider store={store}>
-		<GamePanel />
-	</Provider>,
-	document.getElementById('maincontent')
+    <Router history={browserHistory}>
+        <Route path="/" component={App}/>
+    </Router>,
+    document.getElementById('maincontent')
 )
