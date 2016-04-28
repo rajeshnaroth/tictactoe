@@ -1,5 +1,5 @@
-import { INIT_GAME, PLAYER_CLICK, PLAY_WITH_COMPUTER } from '../actions'
-import { isSolved, randomPlay, isADraw } from '../utils'
+import { INIT_GAME, TRY_AND_WINDUP, USER_PLAY, PLAY_WITH_COMPUTER, COMPUTER_PLAY, SWITCH_PLAYER } from '../actions'
+import { isSolved, computerPlay, isADraw } from '../utils'
 
 function createArray(arraySize) {
 	return function(initValue) {
@@ -10,24 +10,6 @@ function createArray(arraySize) {
 	}
 }
 
-
-function windupGame(returnState) {
-	let {row, column, rowInc, colInc} = completed
-	// NO more actions. set it all inactive
-	returnState.matrix = returnState.matrix.map(
-			row => row.map(
-				col => Object.assign({}, col, {inactive:true})
-		)
-	);
-	returnState.matrix[row][column].solved = true
-	returnState.matrix[row + rowInc][column + colInc].solved = true
-	returnState.matrix[row + rowInc + rowInc][column + colInc + colInc].solved = true
-	// reset
-	returnState.gameOver = true
-	returnState.winner = returnState.player
-	returnState.player = 0
-}
-
 var switchPlayer = playerId => playerId === 1 ? 2 : 1;
 
 const BOARD_SIZE = 3
@@ -36,70 +18,65 @@ const initValue = 0
 
 const game = (state = {board:{playWithComputer:false}}, action={}) => {
 
-	function tryAndWindupGame(returnState) {
-		let completed = isSolved(returnState.matrix);
-		if (completed) {
-			let {row, column, rowInc, colInc} = completed
-			// NO more actions. set it all inactive
-			returnState.matrix = returnState.matrix.map(
-					row => row.map(
-						col => Object.assign({}, col, {inactive: true})
-				)
-			);
-			returnState.matrix[row][column].solved = true
-			returnState.matrix[row + rowInc][column + colInc].solved = true
-			returnState.matrix[row + rowInc + rowInc][column + colInc + colInc].solved = true
-			// reset
-			returnState.gameOver = true
-			returnState.winner = returnState.player
-			returnState.player = 0
-		} else {
-			if (isADraw(returnState.matrix)) {
-				returnState.gameOver = true
-				returnState.winner = -1;
-				returnState.player = 0
-			}
-		}
-		return returnState
-	}
-
 	switch (action.type) {
+
 		case PLAY_WITH_COMPUTER: {
 			return  Object.assign({}, state, { playWithComputer: action.status})
 		}
-		case PLAYER_CLICK: {
-			// let returnState =  {gameOver:state.gameOver, player:state.player, winner:0, matrix:state.matrix.map((r) => r)};
+
+		case USER_PLAY: {
 			let returnState =  Object.assign({}, state)
-			let cellData = Object.assign({}, action.cellData);
-			var newStatus;
-			// Activity only happens in unplayed square and not an inactive square
+			let cellData = Object.assign({}, action.cellData)
 			if (cellData.player === 0 && !cellData.inactive) {
 				cellData.player = returnState.player;
 				returnState.matrix[cellData.rowIndex][cellData.columnIndex] = cellData;
-
-				// Condition 1 - some one won or draw
-				newStatus = tryAndWindupGame(returnState)
-				if(returnState.gameOver) return newStatus;
-
-				// Condition 2 - Game is still on
-				if (returnState.playWithComputer) {
-					returnState.player = switchPlayer(returnState.player)
-					let {row, col} = randomPlay(returnState.matrix, returnState.player, switchPlayer(returnState.player))
-					returnState.matrix[row][col].player = returnState.player
-
-					newStatus = tryAndWindupGame(returnState)
-					if(returnState.gameOver) return newStatus;
-
-					returnState.player = switchPlayer(returnState.player );
-				} else {
-					returnState.player = switchPlayer(returnState.player );
-				}
 			}
 			return returnState;
 		}
-		case INIT_GAME: 
+
+		case COMPUTER_PLAY: {
+			let returnState =  Object.assign({}, state)
+			let {row, col} = computerPlay(returnState.matrix, returnState.player, switchPlayer(returnState.player))
+			returnState.matrix[row][col].player = returnState.player
+			return returnState;
+		}
+
+		case TRY_AND_WINDUP: {
+			let returnState =  Object.assign({}, state)
+			let completed = isSolved(returnState.matrix);
+			if (completed) {
+				let {row, column, rowInc, colInc} = completed
+				// No more actions. set it all inactive
+				returnState.matrix = returnState.matrix.map(
+					(mrow, i) => mrow.map(
+						(mcol, j) => Object.assign({}, mcol, {
+							inactive: true,
+							solved:((i === row && j === column)
+							|| (i === row + rowInc && j === column + colInc )
+							|| (i === row + rowInc + rowInc && j === column + colInc + colInc)) ? true : false
+						})
+					)
+				);
+				returnState.gameOver = true
+				returnState.winner = returnState.player
+				returnState.player = 0
+			} else {
+				if (isADraw(returnState.matrix)) {
+					returnState.gameOver = true
+					returnState.winner = -1;
+					returnState.player = 0
+				}
+			}
+			return returnState
+		}
+
+		case SWITCH_PLAYER: {
+			return  Object.assign({}, state, { player: switchPlayer(state.player)})
+		}
+
+		case INIT_GAME:
 		default: {
-			let initData = {
+			return {
 				player:Math.floor(Math.random() * 2) + 1,
 				gameOver:false,
 				playWithComputer:state.playWithComputer,
@@ -111,12 +88,6 @@ const game = (state = {board:{playWithComputer:false}}, action={}) => {
 					})
 				})
 			}
-			if (initData.playWithComputer && initData.player === 2) {
-				let {row, col} = randomPlay(initData.matrix, 2, 1)
-				initData.matrix[row][col].player = 2
-				initData.player = 1
-			}
-			return initData
 		}
 	}
 }

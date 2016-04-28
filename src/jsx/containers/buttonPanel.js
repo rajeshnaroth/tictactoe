@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { initGame, switchToComputerPlay } from '../actions'
+import { startGame, switchToComputerPlay } from '../actions'
 import BoardButtons from '../components/BoardButtons'
 
 const mapStateToProps = function(state, ownProps) {
@@ -11,10 +11,10 @@ const mapStateToProps = function(state, ownProps) {
 const mapDispatchToProps = function(dispatch, ownProps) {
 	return {
 		buttonClick: function(e) {
-			dispatch(initGame())
+			dispatch(startGame())
 		},
-		checkBoxClick: function(e, status) {
-			dispatch(switchToComputerPlay(status))
+		checkBoxClick: function(e, checkboxStatus) {
+			dispatch(switchToComputerPlay(checkboxStatus))
 		}
 	}
 }

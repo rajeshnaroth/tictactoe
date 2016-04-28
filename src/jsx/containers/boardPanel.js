@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { playerClick, initGame } from '../actions'
+import { playerClick, startGame } from '../actions'
 import Board from '../components/Board'
 
 const mapStateToProps = function(state, ownProps) {
@@ -14,7 +14,7 @@ const mapDispatchToProps = function(dispatch, ownProps) {
 			dispatch(playerClick(cellData))
 		},
 		buttonClick: function(e) {
-			dispatch(initGame())
+			dispatch(startGame())
 		}
 	}
 }

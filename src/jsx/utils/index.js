@@ -32,25 +32,27 @@ export function isSolved(matrix) {
 	)
 }
 
-function playingInThisCellSolves(cell, matrix, player) {
-	var testMatrix = _.cloneDeep(matrix) // copy
-	if (cell.player < 1) {
-		testMatrix[cell.rowIndex][cell.columnIndex].player = player;
-		return !!isSolved(testMatrix)
-	} else {
-		return false;
-	}
-}
-
-function canPlayerSolveInNextMove(matrix, player) {
-	var completedMoves = _.flatten(matrix.map(row => {
-		return row.filter(cell => !!playingInThisCellSolves(cell, matrix, player))
-	}));
-	return (completedMoves.length > 0) ? {row:completedMoves[0].rowIndex, col:completedMoves[0].columnIndex} : false;
-}
 
 // Math.random calls
-export function randomPlay(matrix, player, opponent) {
+export function computerPlay(matrix, player, opponent) {
+
+	function playingInThisCellSolves(cell, matrix, player) {
+		var testMatrix = _.cloneDeep(matrix) // copy
+		if (cell.player < 1) {
+			testMatrix[cell.rowIndex][cell.columnIndex].player = player;
+			return !!isSolved(testMatrix)
+		} else {
+			return false;
+		}
+	}
+
+	function canPlayerSolveInNextMove(matrix, player) {
+		var completedMoves = _.flatten(matrix.map(row => {
+			return row.filter(cell => !!playingInThisCellSolves(cell, matrix, player))
+		}));
+		return (completedMoves.length > 0) ? {row:completedMoves[0].rowIndex, col:completedMoves[0].columnIndex} : false;
+	}
+
 	// Apply a common strategy to increase the odds..
 
 	var nextMove = canPlayerSolveInNextMove(matrix, player) || canPlayerSolveInNextMove(matrix, opponent);
@@ -76,4 +78,15 @@ export function randomPlay(matrix, player, opponent) {
 
 export function isADraw(matrix) {
 	return (_.flatten(matrix.map(row => row.filter(col => col.player === 0))).length === 0)
+}
+
+export function thunk({ dispatch, getState }) {
+	return function(next) {
+		return function(action) {
+			if (typeof action === 'function') {
+				return action(dispatch, getState);
+			}
+			return next(action);
+		}
+	}
 }
