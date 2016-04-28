@@ -1,5 +1,7 @@
 import _ from 'lodash'
 
+export const switchPlayer = playerId => playerId === 1 ? 2 : 1;
+
 export function isSolved(matrix) {
 
 	const checkLine = (a, b, c, params) => {
@@ -34,7 +36,7 @@ export function isSolved(matrix) {
 
 
 // Math.random calls
-export function computerPlay(matrix, player, opponent) {
+export function computerMove(matrix, player, opponent) {
 
 	function playingInThisCellSolves(cell, matrix, player) {
 		var testMatrix = _.cloneDeep(matrix) // copy
@@ -53,26 +55,19 @@ export function computerPlay(matrix, player, opponent) {
 		return (completedMoves.length > 0) ? {row:completedMoves[0].rowIndex, col:completedMoves[0].columnIndex} : false;
 	}
 
-	// Apply a common strategy to increase the odds..
-
+	// can you finish the game? Can you block the opponent?
 	var nextMove = canPlayerSolveInNextMove(matrix, player) || canPlayerSolveInNextMove(matrix, opponent);
 	if (nextMove) return nextMove;
-	// Some dumb moves.
-	if (matrix[1][1].player < 1) return {row:1, col:1} // first preference, the center block
-	// next the corners.
-	if (matrix[0][0].player < 1) return {row:0, col:0}
-	if (matrix[0][2].player < 1) return {row:0, col:2}
-	if (matrix[2][0].player < 1) return {row:2, col:0}
-	if (matrix[2][2].player < 1) return {row:2, col:2}
 
+	// Some strategic moves. WOuld be nice to randomize the groups.. well.
+	var emptyCells = [
+		{row:1,col:1}, // center
+		{row:0,col:0},{row:0,col:2},{row:2,col:0},{row:2,col:2}, //corners
+		{row:0,col:1},{row:1,col:0},{row:1,col:2},{row:2,col:1} // edges
+	].filter(({row,col}) => matrix[row][col].player < 1) // filter out available cells
 
-	if (!isSolved(matrix)) {
-		do {
-			var row = Math.floor(Math.random() * 3); // row and col are hoisted
-			var col = Math.floor(Math.random() * 3);
-		} while(matrix[row][col].player > 0)
-		return {row, col}
-	}
+	if (_.head(emptyCells)) return _.head(emptyCells)
+	throw Error("Unable to make computer's next move")
 }
 
 

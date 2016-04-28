@@ -1,5 +1,6 @@
 import { INIT_GAME, TRY_AND_WINDUP, USER_PLAY, TURN_ON_COMPUTER_PLAY, COMPUTER_PLAY, SWITCH_PLAYER } from '../actions'
-import { isSolved, computerPlay, isADraw } from '../utils'
+import { switchPlayer, isSolved, isADraw, computerMove} from '../utils'
+import _ from 'lodash'
 
 function createArray(arraySize) {
 	return function(initValue) {
@@ -10,12 +11,12 @@ function createArray(arraySize) {
 	}
 }
 
-var switchPlayer = playerId => playerId === 1 ? 2 : 1;
-
 const BOARD_SIZE = 3
 const boardArray = createArray(BOARD_SIZE)
 const initValue = 0
 
+//Note the use of _.random().
+//game cannot be a pure reducer as it requires to randomize first play
 const game = (state = {board:{playWithComputer:false}}, action={}) => {
 
 	switch (action.type) {
@@ -36,7 +37,7 @@ const game = (state = {board:{playWithComputer:false}}, action={}) => {
 
 		case COMPUTER_PLAY: {
 			let returnState =  Object.assign({}, state)
-			let {row, col} = computerPlay(returnState.matrix, returnState.player, switchPlayer(returnState.player))
+			let {row, col} = computerMove(returnState.matrix, returnState.player, switchPlayer(returnState.player))
 			returnState.matrix[row][col].player = returnState.player
 			return returnState;
 		}
@@ -77,7 +78,7 @@ const game = (state = {board:{playWithComputer:false}}, action={}) => {
 		case INIT_GAME:
 		default: {
 			return {
-				player:Math.floor(Math.random() * 2) + 1,
+				player:_.random(1, 2),
 				gameOver:false,
 				playWithComputer:state.playWithComputer,
 				winner:0,
