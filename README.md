@@ -37,4 +37,4 @@ cd to your projects folder:
     npm start
     open http://localhost:9000/
 
-## Karma tests are stubs only. This was more of an exercise in figuring out react/redux
+##### Karma tests are stubs only. This was more of an exercise in figuring out react/redux
