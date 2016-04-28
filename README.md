@@ -36,3 +36,5 @@ cd to your projects folder:
     webpack
     npm start
     open http://localhost:9000/
+
+## Karma tests are stubs only. This was more of an exercise in figuring out react/redux
