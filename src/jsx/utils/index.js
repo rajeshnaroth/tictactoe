@@ -55,16 +55,38 @@ export function computerMove(matrix, player, opponent) {
 		return (completedMoves.length > 0) ? {row:completedMoves[0].rowIndex, col:completedMoves[0].columnIndex} : false;
 	}
 
+    // First move matters. 
+    function usersFirstMove(matrix) {
+		var completedMoves = _.flatten(matrix.map(row => row.filter(cell => cell.player > 0)));
+		return (completedMoves.length === 1 ? _.head(completedMoves) : null)
+    }
+    
+    
 	// can you finish the game? Can you block the opponent?
 	var nextMove = canPlayerSolveInNextMove(matrix, player) || canPlayerSolveInNextMove(matrix, opponent);
 	if (nextMove) return nextMove;
 
-	// Some strategic moves. WOuld be nice to randomize the groups.. well.
-	var emptyCells = [
-		{row:1,col:1}, // center
-		{row:0,col:0},{row:0,col:2},{row:2,col:0},{row:2,col:2}, //corners
-		{row:0,col:1},{row:1,col:0},{row:1,col:2},{row:2,col:1} // edges
-	].filter(({row,col}) => matrix[row][col].player < 1) // filter out available cells
+	// Some strategic moves.
+    const cornerCells = [ {row:0, col:0}, {row:0, col:2}, {row:2, col:0}, {row:2, col:2} ]
+    const edgeCells = [ {row:0, col:1}, {row:1, col:0}, {row:1, col:2}, {row:2, col:1} ]
+    const centerCells = [ {row:1,col:1} ]
+    const usersFirstMoveCell = usersFirstMove(matrix)
+    let allCells = []
+    if (usersFirstMoveCell) {
+        //If user played corner, play side and vice versa.
+        if ((usersFirstMoveCell.rowIndex + usersFirstMoveCell.columnIndex) % 2 == 1) {
+            allCells = cornerCells;
+        } else {
+            allCells = edgeCells;
+        }
+        
+    } else {  
+        allCells = _.concat(cornerCells, edgeCells, centerCells)
+    }
+    
+    
+	var emptyCells = _.shuffle(allCells).filter(({row,col}) => matrix[row][col].player < 1) // filter out available cells
+	
 
 	if (_.head(emptyCells)) return _.head(emptyCells)
 	throw Error("Unable to make computer's next move")

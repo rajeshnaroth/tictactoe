@@ -17,7 +17,7 @@ const initValue = 0
 
 //Note the use of _.random().
 //game cannot be a pure reducer as it requires to randomize first play
-const game = (state = {board:{playWithComputer:false}}, action={}) => {
+const game = (state = {playWithComputer:true}, action={}) => {
 
 	switch (action.type) {
 
@@ -75,8 +75,7 @@ const game = (state = {board:{playWithComputer:false}}, action={}) => {
 			return  Object.assign({}, state, { player: switchPlayer(state.player)})
 		}
 
-		case INIT_GAME:
-		default: {
+		case INIT_GAME: {
 			return {
 				player:_.random(1, 2),
 				gameOver:false,
@@ -89,6 +88,11 @@ const game = (state = {board:{playWithComputer:false}}, action={}) => {
 					})
 				})
 			}
+		}
+        
+        default: {
+			console.log(action.type)
+			return  Object.assign({}, state)
 		}
 	}
 }

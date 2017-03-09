@@ -39,10 +39,20 @@ export function switchPlayer() {
 	}
 }
 
-export function turnOnComputerPlay(status) {
+export function setComputerPlay(status) {
 	return {
 		type: TURN_ON_COMPUTER_PLAY,
 		status: status
+	}
+}
+
+export function turnOnComputerPlay(status) {
+	return (dispatch, getState) => {
+		Promise.all([
+			dispatch(setComputerPlay(status))
+		]).then(() => {
+			startGame()(dispatch, getState)
+		})
 	}
 }
 
@@ -63,7 +73,13 @@ export function startGame() {
 }
 
 export function playerClick(cellData) {
+	// Cell already played
+	
+	        
 	return (dispatch, getState) => {
+		if (cellData.player > 0) {
+			return
+		}
 		Promise.all([
 			dispatch(userPlay(cellData)),
 			dispatch(tryToWindUp())

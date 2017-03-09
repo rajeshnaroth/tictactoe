@@ -33,7 +33,7 @@ cd to your projects folder:
     git clone https://github.com/rajeshnaroth/tictactoe.git
     cd tictactoe
     npm install
-    webpack
+    webpack (or webpack -p for a production bundle)
     npm start
     open http://localhost:9000/
 

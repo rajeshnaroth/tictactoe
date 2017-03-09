@@ -4,13 +4,13 @@ var Status = React.createClass({
 	render: function() {
 		let gameOverClass = (gameOver) => gameOver ? 'visible' : 'hide'
 		let playerName = (playerNum, computerPlay) =>  computerPlay? ((playerNum === 2) ? 'Computer\'s' : 'Your') : 'Player ' + playerNum + "'s"
-		let winnerName = (winnerNum, computerPlay) =>  computerPlay? ((winnerNum === 2) ? 'Computer' : 'You') : 'Player ' + winnerNum + "'s"
+		let winnerName = (winnerNum, computerPlay) =>  computerPlay? ((winnerNum === 2) ? 'Computer wins' : 'You win') : 'Player ' + winnerNum + ' wins'
 		let statusMessage = (winner, playWithComputer=false) => {
 			if (winner === 2 && playWithComputer) return "Computer wins!"
 			switch (winner) {
 				case 0 : { return '' }
 				case -1 : { return "It's a draw" }
-				default : { return winnerName(winner, playWithComputer) + ' won' }
+				default : { return winnerName(winner, playWithComputer) }
 			}
 		}
 
