@@ -1,11 +1,11 @@
 import { INIT_GAME, TRY_AND_WINDUP, USER_PLAY, TURN_ON_COMPUTER_PLAY, COMPUTER_PLAY, SWITCH_PLAYER } from '../actions'
 import { switchPlayer, isSolved, isADraw, computerMove} from '../utils'
-import _ from 'lodash'
+import { random } from 'lodash/fp'
 
 function createArray(arraySize) {
 	return function(initValue) {
-		var ret = [];
-		var sz = 0;
+		let ret = [];
+		let sz = 0;
 		while (sz++ < arraySize) ret.push(initValue);
 		return ret;
 	}
@@ -15,7 +15,7 @@ const BOARD_SIZE = 3
 const boardArray = createArray(BOARD_SIZE)
 const initValue = 0
 
-//Note the use of _.random().
+//Note the use of random().
 //game cannot be a pure reducer as it requires to randomize first play
 const game = (state = {playWithComputer:true}, action={}) => {
 
@@ -77,7 +77,7 @@ const game = (state = {playWithComputer:true}, action={}) => {
 
 		case INIT_GAME: {
 			return {
-				player:_.random(1, 2),
+				player:random(1, 2),
 				gameOver:false,
 				playWithComputer:state.playWithComputer,
 				winner:0,
@@ -91,7 +91,6 @@ const game = (state = {playWithComputer:true}, action={}) => {
 		}
         
         default: {
-			console.log(action.type)
 			return  Object.assign({}, state)
 		}
 	}

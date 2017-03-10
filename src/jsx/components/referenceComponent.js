@@ -1,5 +1,5 @@
-var React = require('react')
-var ReferenceComponent = React.createClass({
+import React from 'react'
+const ReferenceComponent = React.createClass({
 	// Initial render
 	// getDefaultProps()
 	// getInitialState()
